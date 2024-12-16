@@ -5,8 +5,11 @@ export default class Player extends GameObject {
     super(game, 0, 0, 128, 128, "#fff", 5)
 
     this.image = new Image()
-    this.image.src = "./src/assets/franks_doge.png"
-
+    this.image.src = "./src/assets/Grabbmedspade1.png"
+    this.attack = new Image() 
+    this.attack.src = "./src/assets/Grabbmedspade2.png"
+    this.currentSprite = this.image
+    
     this.speedX = 0
     this.speedY = 0
 
@@ -19,9 +22,15 @@ export default class Player extends GameObject {
     this.fps = 20
     this.timer = 0
     this.interval = 1000 / this.fps
+
+    this.attackCooldown = 0
+    this.lastAttack = 0
+    this.canAttack = true
   }
 
   update(deltaTime) {
+    this.currentSprite = this.image
+    
     if (this.game.keys.has("ArrowLeft")) {
       this.speedX = -this.maxSpeed
       this.flip = true
@@ -39,27 +48,20 @@ export default class Player extends GameObject {
     } else {
       this.speedY = 0
     }
-
-    if (this.speedX !== 0 || this.speedY !== 0) {
-      this.frameY = 3
-      this.maxFrames = 9
-    } else {
-      this.frameY = 0
-      this.maxFrames = 7
+    if (this.game.keys.has("x")) {
+      console.log("Attacked")
+      this.currentSprite = this.attack
+      this.canAttack = false
+      this.lastAttack = Date.now()
     }
 
     this.x += this.speedX
     this.y += this.speedY
-
-    if (this.timer > this.interval) {
-      this.frameX++
-      this.timer = 0
-    } else {
-      this.timer += deltaTime
-    }
-
-    if (this.frameX >= this.maxFrames) {
-      this.frameX = 0
+    if (!this.canAttack){
+      const currentTime = Date.now()
+      if (currentTime - this.lastAttack >= this.attackCooldown) {
+        this.attackReady = true // Cooldown is over, player can attack again
+      }
     }
   }
 
@@ -68,12 +70,19 @@ export default class Player extends GameObject {
       ctx.save()
       ctx.scale(-1, 1)
     }
+    // ctx.drawImage(
+    //   this.image,
+    //   this.frameX * this.frameWidth,
+    //   this.frameY * this.frameHeight,
+    //   this.frameWidth,
+    //   this.frameHeight,
+    //   this.flip ? this.x * -1 - this.width : this.x,
+    //   this.y,
+    //   this.width,
+    //   this.height,
+    // )
     ctx.drawImage(
-      this.image,
-      this.frameX * this.frameWidth,
-      this.frameY * this.frameHeight,
-      this.frameWidth,
-      this.frameHeight,
+      this.currentSprite,
       this.flip ? this.x * -1 - this.width : this.x,
       this.y,
       this.width,

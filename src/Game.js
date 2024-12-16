@@ -1,6 +1,7 @@
 import GameObject from "./GameObject.js"
 import InputHandler from "./InputHandler.js"
 import Player from "./Player.js"
+import Enemy from "./Enemy.js"
 
 export default class Game {
   constructor(width, height) {
@@ -20,13 +21,20 @@ export default class Game {
       new GameObject(this, 0, 200, 20, 20, '#0f0', 200),
       new GameObject(this, 0, 300, 20, 20, '#00f', 300)
     ]
+
+
+    this.enemies = [
+      new Enemy(this, 0, 100, 20, 20, '#f00', 100)
+    ]
   }
 
   update(deltaTime) {
     this.gameObjects.forEach(gameObject => {
       gameObject.update(deltaTime)
     })
-
+    this.enemies.forEach(enemy => {
+      enemy.update(deltaTime)
+    })
     this.player.update(deltaTime)
   }
 
@@ -35,6 +43,9 @@ export default class Game {
       gameObject.draw(ctx)
     })
 
+    this.enemies.forEach(enemy => {
+      enemy.draw(ctx)
+    })
     this.player.draw(ctx)
   }
 }
