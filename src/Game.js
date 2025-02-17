@@ -15,20 +15,18 @@ export default class Game {
 
     this.player = new Player(this)
 
+    this.gameObjects = []
+    this.enemies = [];
 
-    this.gameObjects = [
-      new GameObject(this, 0, 100, 20, 20, '#f00', 100),
-      new GameObject(this, 0, 200, 20, 20, '#0f0', 200),
-      new GameObject(this, 0, 300, 20, 20, '#00f', 300)
-    ]
+    for (let index = 0; index < 10000; index++) {
+      let enemy = new Enemy(this, Math.random() * this.width, Math.random() * this.height, 20, 20, "#f00", 100);
+      this.enemies.push(enemy)
 
-
-    this.enemies = [
-      new Enemy(this, 0, 100, 20, 20, '#f00', 100)
-    ]
+    }
   }
-
   update(deltaTime) {
+    console.log(this.enemies)
+
     this.gameObjects.forEach(gameObject => {
       gameObject.update(deltaTime)
     })

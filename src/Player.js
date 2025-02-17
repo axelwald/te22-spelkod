@@ -10,6 +10,7 @@ export default class Player extends GameObject {
     this.attack.src = "./src/assets/Grabbmedspade2.png"
     this.currentSprite = this.image
     
+
     this.speedX = 0
     this.speedY = 0
 

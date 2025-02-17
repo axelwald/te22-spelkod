@@ -1,9 +1,11 @@
 import GameObject from "./GameObject"
 
 export default class Enemy extends GameObject {
-  constructor(game) {
-    super(game, 0, 0, 128, 128, "#fff", 5)
+  constructor(game,x,y) {
+    super(game, x,y, 128, 128, "#fff", 5)
     
+    this.x = x;
+    this.y = y;
     this.image = new Image()
     this.image.src = "./src/assets/isbjörn.png"
 
@@ -18,9 +20,15 @@ export default class Enemy extends GameObject {
     let dx = this.game.player.x - this.x
     let dy = this.game.player.y - this.y
 
-
     this.x += dx/60 * this.speed
     this.y += dy/60 * this.speed
+
+    if (this.x - this.game.player.x < 0){
+      this.flip = true
+    } else{
+      this.flip = false
+    }
+
   }
 
 
